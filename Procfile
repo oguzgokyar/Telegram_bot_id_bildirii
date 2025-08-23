@@ -1,1 +1,1 @@
-web: python debug_env.py && python start.py
+web: python debug_env.py && python webhook_manager.py && python start.py

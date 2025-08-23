@@ -42,6 +42,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
     chat = update.effective_chat
     
+    # Debug log
+    print(f"🎉 START komutu alındı! User: {user.id}, Chat: {chat.id}")
+    logger.info(f"Start komutu alındı - User: {user.id} ({user.first_name}), Chat: {chat.id}")
+    
     # Chat ID bilgisini hazırla
     message = f"""
 🤖 *HaberinOlsunRSS Bot*
@@ -133,14 +137,26 @@ def main() -> None:
     if railway_url:
         # Production modunda webhook kullan
         webhook_url = f"https://{railway_url}"
+        webhook_path = f"/{BOT_TOKEN}"
+        full_webhook_url = f"{webhook_url}{webhook_path}"
+        
         logger.info(f"Webhook modunda başlatılıyor: {webhook_url}")
         print(f"✅ Webhook URL: {webhook_url}")
-        application.run_webhook(
-            listen="0.0.0.0",
-            port=PORT,
-            url_path=BOT_TOKEN,
-            webhook_url=f"{webhook_url}/{BOT_TOKEN}"
-        )
+        print(f"🔗 Tam webhook URL: {full_webhook_url}")
+        print(f"📝 Port: {PORT}")
+        
+        try:
+            application.run_webhook(
+                listen="0.0.0.0",
+                port=PORT,
+                url_path=BOT_TOKEN,
+                webhook_url=full_webhook_url
+            )
+        except Exception as e:
+            logger.error(f"Webhook başlatılmasında hata: {e}")
+            print(f"❌ Webhook hatası: {e}")
+            print("🔄 Polling moduna geçiliyor...")
+            application.run_polling(allowed_updates=Update.ALL_TYPES)
     else:
         # Railway'de URL yoksa da polling kullan (geliştirme ve test için)
         logger.info("Railway URL bulunamadı - Polling modunda başlatılıyor...")
