@@ -145,36 +145,41 @@ def main() -> None:
         # Railway URL'sini kontrol et
         railway_url = RAILWAY_STATIC_URL or RAILWAY_PUBLIC_DOMAIN
         
-        if railway_url:
-            # Production modunda webhook kullan
-            webhook_url = f"https://{railway_url}"
-            webhook_path = f"/{BOT_TOKEN}"
-            full_webhook_url = f"{webhook_url}{webhook_path}"
-            
-            logger.info(f"Webhook modunda başlatılıyor: {webhook_url}")
-            print(f"✅ Webhook URL: {webhook_url}")
-            print(f"🔗 Tam webhook URL: {full_webhook_url}")
-            print(f"📝 Port: {PORT}")
-            
-            try:
-                print("🔄 Webhook modunda başlatılıyor...")
-                application.run_webhook(
-                    listen="0.0.0.0",
-                    port=PORT,
-                    url_path=BOT_TOKEN,
-                    webhook_url=full_webhook_url
-                )
-            except Exception as e:
-                logger.error(f"Webhook başlatılmasında hata: {e}")
-                print(f"❌ Webhook hatası: {e}")
-                print("🔄 Polling moduna geçiliyor...")
-                application.run_polling(allowed_updates=Update.ALL_TYPES)
-        else:
-            # Railway'de URL yoksa da polling kullan (geliştirme ve test için)
-            logger.info("Railway URL bulunamadı - Polling modunda başlatılıyor...")
-            print("⚠️ Railway URL yok - Polling modu aktif")
-            print("🛠️ Railway'de 'Generate Domain' ile URL oluşturun")
-            application.run_polling(allowed_updates=Update.ALL_TYPES)
+        # Railway'de webhook problemi olduğu için geçici olarak polling kullan
+        print("⚠️ Railway'de webhook problemi - Polling modunda başlatılıyor...")
+        logger.info("Railway webhook problemi nedeniyle polling modunda başlatılıyor...")
+        print("🔄 Polling modu aktif - Bot komutları çalışacak!")
+        application.run_polling(allowed_updates=Update.ALL_TYPES)
+        
+        # Webhook kodu geçici olarak devre dışı bırakıldı
+        # if railway_url:
+        #     webhook_url = f"https://{railway_url}"
+        #     webhook_path = f"/{BOT_TOKEN}"
+        #     full_webhook_url = f"{webhook_url}{webhook_path}"
+        #     
+        #     logger.info(f"Webhook modunda başlatılıyor: {webhook_url}")
+        #     print(f"✅ Webhook URL: {webhook_url}")
+        #     print(f"🔗 Tam webhook URL: {full_webhook_url}")
+        #     print(f"📝 Port: {PORT}")
+        #     
+        #     try:
+        #         print("🔄 Webhook modunda başlatılıyor...")
+        #         application.run_webhook(
+        #             listen="0.0.0.0",
+        #             port=PORT,
+        #             url_path=BOT_TOKEN,
+        #             webhook_url=full_webhook_url
+        #         )
+        #     except Exception as e:
+        #         logger.error(f"Webhook başlatılmasında hata: {e}")
+        #         print(f"❌ Webhook hatası: {e}")
+        #         print("🔄 Polling moduna geçiliyor...")
+        #         application.run_polling(allowed_updates=Update.ALL_TYPES)
+        # else:
+        #     logger.info("Railway URL bulunamadı - Polling modunda başlatılıyor...")
+        #     print("⚠️ Railway URL yok - Polling modu aktif")
+        #     print("🛠️ Railway'de 'Generate Domain' ile URL oluşturun")
+        #     application.run_polling(allowed_updates=Update.ALL_TYPES)
             
     except Exception as e:
         print(f"❌ main() fonksiyonunda hata: {e}")
