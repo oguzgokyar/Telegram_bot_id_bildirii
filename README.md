@@ -72,6 +72,40 @@ Railway'de aşağıdaki environment variable'ları ayarlayın:
 | `RAILWAY_STATIC_URL` | Railway otomatik ayarlar | `your-project.up.railway.app` |
 | `PORT` | Railway otomatik ayarlar | `8443` |
 
+## 🔧 Troubleshooting
+
+### "BOT_TOKEN environment variable'ı ayarlanmamış!" Hatası
+
+Bu hata Railway'de BOT_TOKEN environment variable'ının ayarlanmadığını gösterir.
+
+**Çözüm:**
+1. Railway dashboard'a gidin
+2. Projenizi seçin
+3. "Variables" sekmesine tıklayın
+4. "New Variable" butonuna tıklayın
+5. Aşağıdaki bilgileri girin:
+   - **Name:** `BOT_TOKEN`
+   - **Value:** BotFather'dan aldığınız token (örn: `1234567890:ABCdefGHIjklMNOpqrsTUVwxyz`)
+6. "Add" butonuna tıklayın
+7. Railway otomatik olarak yeniden deploy edecektir
+
+### Debug Modu
+
+Eğer sorun devam ederse debug modunu aktif edin:
+
+1. Railway'de "Settings" → "Deploy" bölümünde
+2. "Start Command" kısmını `python debug_env.py && python start.py` olarak değiştirin
+3. Deploy loglarında detaylı environment variable bilgilerini görebilirsiniz
+
+### Token Doğrulama
+
+BotFather'dan yeni token almak için:
+1. [@BotFather](https://t.me/botfather) ile konuşun
+2. `/mybots` komutunu gönderin
+3. Botunuzu seçin
+4. "API Token" → "Revoke current token" → "Yes"
+5. Yeni token'ı kopyalayın ve Railway'de güncelleyin
+
 ## 🔧 Teknik Detaylar
 
 - **Framework**: python-telegram-bot 20.7

@@ -14,6 +14,16 @@ logger = logging.getLogger(__name__)
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 if not BOT_TOKEN:
+    print("❌ HATA: BOT_TOKEN environment variable'ı bulunamadı!")
+    print("🔧 Çözüm:")
+    print("1. Railway dashboard'da Variables sekmesine gidin")
+    print("2. BOT_TOKEN adında yeni bir variable ekleyin")
+    print("3. Değer olarak BotFather'dan aldığınız token'ı girin")
+    print("4. Deploy'u yeniden başlatın")
+    print("\n📋 Mevcut environment variables:")
+    for key, value in os.environ.items():
+        if 'TOKEN' in key.upper() or 'BOT' in key.upper() or 'RAILWAY' in key.upper():
+            print(f"   {key} = {'*' * len(value) if value else 'BOŞ'}")
     raise ValueError("BOT_TOKEN environment variable'ı ayarlanmamış!")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

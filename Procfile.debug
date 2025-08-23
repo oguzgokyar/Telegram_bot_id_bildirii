@@ -1,0 +1,5 @@
+# Ana çalıştırma
+web: python start.py
+
+# Debug için (Railway'de bu satırı aktif etmek için Procfile'ı düzenleyin)
+# debug: python debug_env.py && python start.py
