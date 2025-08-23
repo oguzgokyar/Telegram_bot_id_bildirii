@@ -1,1 +1,1 @@
-web: python start.py
+web: python debug_env.py && python start.py
