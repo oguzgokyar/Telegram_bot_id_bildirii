@@ -31,23 +31,33 @@ def start_bot(retry_count=0):
         # Imports'u güvenli şekilde yap
         try:
             print("📦 Bot modülü import ediliyor...")
+            # Önce telegram kütüphanesini test et
+            try:
+                import telegram
+                print("✅ telegram kütüphanesi mevcut")
+            except ImportError as telegram_error:
+                print(f"❌ telegram kütüphanesi import hatası: {telegram_error}")
+                print("🛠️ Çözüm: pip install python-telegram-bot")
+                raise telegram_error
+            
+            # Şimdi bot modülünü import et
             import bot
             print("✅ Bot modülü başarıyla import edildi!")
+            print("🎉 Bot başarıyla çalışıyor!")
+            
         except ImportError as import_error:
             print(f"❌ Import hatası: {import_error}")
             print("🔍 Kullanılabilir modüller kontrol ediliyor...")
             
-            try:
-                import telegram
-                print("✅ telegram modülü mevcut")
-            except ImportError:
-                print("❌ telegram modülü bulunamadı")
-            
-            try:
-                import requests
-                print("✅ requests modülü mevcut")
-            except ImportError:
-                print("❌ requests modülü bulunamadı")
+            # Mevcut modülleri listele
+            import pkg_resources
+            installed_packages = [d.project_name for d in pkg_resources.working_set]
+            print(f"📋 Yüklü paketler ({len(installed_packages)} adet):")
+            telegram_related = [p for p in installed_packages if 'telegram' in p.lower()]
+            if telegram_related:
+                print(f"🔍 Telegram ile ilgili paketler: {telegram_related}")
+            else:
+                print("❌ Telegram ile ilgili paket bulunamadı!")
             
             raise import_error
         
