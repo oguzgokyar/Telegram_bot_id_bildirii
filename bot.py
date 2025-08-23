@@ -11,7 +11,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Bot token'ını environment variable'dan al
-BOT_TOKEN = os.getenv('BOT_TOKEN')
+BOT_TOKEN = os.getenv('8227428840:AAEa5-jjW9dHIGlIGlXJ8VcKuAGAbyieJnQ')
 
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN environment variable'ı ayarlanmamış!")
