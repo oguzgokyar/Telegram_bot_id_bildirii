@@ -125,11 +125,16 @@ def main() -> None:
     # Railway için webhook modunda çalıştır
     PORT = int(os.environ.get('PORT', 8443))
     RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL')
+    RAILWAY_PUBLIC_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
     
-    if RAILWAY_STATIC_URL:
+    # Railway URL'sini kontrol et
+    railway_url = RAILWAY_STATIC_URL or RAILWAY_PUBLIC_DOMAIN
+    
+    if railway_url:
         # Production modunda webhook kullan
-        webhook_url = f"https://{RAILWAY_STATIC_URL}"
+        webhook_url = f"https://{railway_url}"
         logger.info(f"Webhook modunda başlatılıyor: {webhook_url}")
+        print(f"✅ Webhook URL: {webhook_url}")
         application.run_webhook(
             listen="0.0.0.0",
             port=PORT,
@@ -137,8 +142,10 @@ def main() -> None:
             webhook_url=f"{webhook_url}/{BOT_TOKEN}"
         )
     else:
-        # Development modunda polling kullan
-        logger.info("Polling modunda başlatılıyor...")
+        # Railway'de URL yoksa da polling kullan (geliştirme ve test için)
+        logger.info("Railway URL bulunamadı - Polling modunda başlatılıyor...")
+        print("⚠️ Railway URL yok - Polling modu aktif")
+        print("🛠️ Railway'de 'Generate Domain' ile URL oluşturun")
         application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
