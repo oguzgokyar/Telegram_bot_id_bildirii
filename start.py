@@ -16,16 +16,19 @@ def start_bot(retry_count=0):
         print(f"📍 Python Version: {sys.version.split()[0]}")
         print(f"📁 Working Directory: {os.getcwd()}")
         
-        # Bot token'ı debug için kontrol et (ama hatada çıkmaz)
+        # Bot token'ı kontrol et ve environment'a set et
         bot_token = os.getenv('BOT_TOKEN')
         if bot_token:
             print(f"✅ BOT_TOKEN mevcut ({len(bot_token)} karakter)")
+            # Environment'a kesin olarak set et (cache sorunları için)
+            os.environ['BOT_TOKEN'] = bot_token
+            print(f"🔧 BOT_TOKEN environment'a yeniden set edildi")
         else:
             print("⚠️ BOT_TOKEN bulunamadı - bot.py kendi kontrolünü yapacak")
         
         print("🤖 Bot başlatılıyor...")
         
-        # bot.py'yi import et ve çalıştır - kendi BOT_TOKEN kontrolünü yapacak
+        # bot.py'yi import et ve çalıştır - artık BOT_TOKEN kesin olarak environment'da
         import bot
         
     except ImportError as e:

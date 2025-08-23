@@ -11,7 +11,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Bot token'ını environment variable'dan al
+print("🔍 [bot.py] BOT_TOKEN kontrol ediliyor...")
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+print(f"🔍 [bot.py] os.getenv('BOT_TOKEN') sonucu: {'BULUNDU' if BOT_TOKEN else 'BULUNAMADI'}")
 
 if not BOT_TOKEN:
     print("❌ HATA: BOT_TOKEN environment variable'ı bulunamadı!")
@@ -24,7 +26,16 @@ if not BOT_TOKEN:
     for key, value in os.environ.items():
         if 'TOKEN' in key.upper() or 'BOT' in key.upper() or 'RAILWAY' in key.upper():
             print(f"   {key} = {'*' * len(value) if value else 'BOŞ'}")
+    
+    # Tüm environment'u listele
+    print(f"\n📋 Tüm environment variables ({len(os.environ)} adet):")
+    for key in sorted(os.environ.keys()):
+        if any(keyword in key.upper() for keyword in ['TOKEN', 'BOT', 'PYTHON', 'PATH']):
+            print(f"   {key}")
+    
     raise ValueError("BOT_TOKEN environment variable'ı ayarlanmamış!")
+else:
+    print(f"✅ [bot.py] BOT_TOKEN başarıyla bulundu! ({len(BOT_TOKEN)} karakter)")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Bot başlatıldığında çalışır ve kullanıcıya chat ID'sini gönderir."""
