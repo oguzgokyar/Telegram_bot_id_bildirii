@@ -181,17 +181,5 @@ def main() -> None:
         logger.error(f"main() fonksiyonunda hata: {e}")
         raise e
 
-if __name__ == '__main__':
-    try:
-        print("🚀 Ana bot fonksiyonu başlatılıyor...")
-        main()
-    except KeyboardInterrupt:
-        print("\nℹ️ Bot durduruldu (Ctrl+C)")
-    except Exception as e:
-        print(f"\n❌ Bot çalıştırılırken kritik hata: {e}")
-        print(f"🔍 Hata tipi: {type(e).__name__}")
-        print(f"📝 Hata detayı: {str(e)}")
-        import traceback
-        print("🔍 Stack trace:")
-        traceback.print_exc()
-        sys.exit(1)
+# main() fonksiyonu start.py tarafından çağrılacak
+# if __name__ == '__main__': bloğu kaldırıldı

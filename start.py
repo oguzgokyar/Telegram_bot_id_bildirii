@@ -45,6 +45,11 @@ def start_bot(retry_count=0):
             print("✅ Bot modülü başarıyla import edildi!")
             print("🎉 Bot başarıyla çalışıyor!")
             
+            # Bot'un main fonksiyonunu çağır
+            print("🚀 Bot main() fonksiyonu çağrılıyor...")
+            bot.main()
+            print("✅ Bot main() fonksiyonu tamamlandı!")
+            
         except ImportError as import_error:
             print(f"❌ Import hatası: {import_error}")
             print("🔍 Kullanılabilir modüller kontrol ediliyor...")
