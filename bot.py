@@ -1,7 +1,14 @@
 import os
 import logging
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+import sys
+try:
+    from telegram import Update
+    from telegram.ext import Application, CommandHandler, ContextTypes
+    print("✅ Telegram kütüphaneleri başarıyla import edildi")
+except ImportError as e:
+    print(f"❌ Telegram import hatası: {e}")
+    print("🛠️ pip install python-telegram-bot komutu ile yükleyin")
+    sys.exit(1)
 
 # Logging yapılandırması
 logging.basicConfig(
@@ -165,4 +172,16 @@ def main() -> None:
         application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
-    main()
+    try:
+        print("🚀 Ana bot fonksiyonu başlatılıyor...")
+        main()
+    except KeyboardInterrupt:
+        print("\nℹ️ Bot durduruldu (Ctrl+C)")
+    except Exception as e:
+        print(f"\n❌ Bot çalıştırılırken kritik hata: {e}")
+        print(f"🔍 Hata tipi: {type(e).__name__}")
+        print(f"📝 Hata detayı: {str(e)}")
+        import traceback
+        print("🔍 Stack trace:")
+        traceback.print_exc()
+        sys.exit(1)
