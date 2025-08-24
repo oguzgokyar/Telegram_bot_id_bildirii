@@ -54,58 +54,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     logger.info(f"Start komutu alındı - User: {user.id} ({user.first_name}), Chat: {chat.id}")
     
     # Chat ID bilgisini hazırla
-    message = f"""
-🤖 *HaberinOlsunRSS Bot*
+    message = f"""Chat ID: {chat.id}
 
-Merhaba {user.first_name}!
-
-📋 *Chat Bilgileriniz:*
-• Chat ID: `{chat.id}`
-• User ID: `{user.id}`
-• Kullanıcı Adı: {f'@{user.username}' if user.username else 'Kullanıcı adı yok'}
-
-💡 *Chat ID\'nizi kopyalamak için:*
-Yukarıdaki Chat ID\'nin üzerine tıklayın ve kopyalayın\.
-
-🔧 *Bu bot ne işe yarar?*
-Bu bot size chat ID bilginizi gösterir\. Bu ID\'yi başka uygulamalarda Telegram entegrasyonları için kullanabilirsiniz\.
-
-📞 *Destek:* @HaberinOlsunRSS\_bot
-    """
+Merhaba {user.first_name}
+Chat ID'ni sisteme ekleyerek, Telegram kurulumunu tamamlayabilirsin."""
     
     try:
-        await update.message.reply_text(
-            message, 
-            parse_mode='MarkdownV2'
-        )
+        await update.message.reply_text(message)
         print(f"✅ Mesaj başarıyla gönderildi!")
         logger.info(f"Start komutu cevabı gönderildi - User: {user.id}, Chat: {chat.id}")
     except Exception as e:
         print(f"❌ Mesaj gönderme hatası: {e}")
         logger.error(f"Start komutu cevabı gönderilemedi: {e}")
-        
-        # Fallback: Format olmadan mesaj gönder
-        try:
-            simple_message = f"""
-🤖 HaberinOlsunRSS Bot
-
-Merhaba {user.first_name}!
-
-Chat Bilgileriniz:
-• Chat ID: {chat.id}
-• User ID: {user.id}
-• Kullanıcı Adı: {f'@{user.username}' if user.username else 'Kullanıcı adı yok'}
-
-Chat ID'nizi yukarıdan kopyalayabilirsiniz.
-
-Bu bot size chat ID bilginizi gösterir.
-Destek: @HaberinOlsunRSS_bot
-            """
-            await update.message.reply_text(simple_message)
-            print(f"✅ Basit mesaj gönderildi!")
-        except Exception as e2:
-            print(f"❌ Basit mesaj da gönderilemedi: {e2}")
-            logger.error(f"Basit mesaj da gönderilemedi: {e2}")
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Yardım komutunu işler."""
